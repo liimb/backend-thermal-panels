@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: ThermalBack
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/dbforthermal
+    username: art
+    password: art
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/dbforthermal
+    user: art
+    password: art
+    schemas: public
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.hibernate.format_sql: true
+
+jwt:
+  secret:
+
+server:
+  port: 7070

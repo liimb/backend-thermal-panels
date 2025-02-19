@@ -1,0 +1,12 @@
+version: '2.3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: thermalDB
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=art
+      - POSTGRES_USER=art
+      - POSTGRES_DB=dbforthermal
