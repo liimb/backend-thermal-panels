@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>23</java.version>
+        <jwt.version>4.4.0</jwt.version>
         <thermal_back.mainClass>com.thermal.thermalback.ThermalBackApplication</thermal_back.mainClass>
     </properties>
 
@@ -85,6 +86,12 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>0.12.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt.version}</version>
         </dependency>
 
         <dependency>
