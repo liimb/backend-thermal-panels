@@ -20,8 +20,8 @@ public class AuthController {
     }
 
     @PostMapping("/login/by-sms")
-    public void loginBySms(@RequestBody AuthRequestBySms request) throws AuthException {
-        authService.loginBySms(request);
+    public AuthResponse loginBySms(@RequestBody AuthRequestBySms request) throws AuthException {
+        return authService.loginBySms(request);
     }
 
     //рефреш токены, логаут

@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface SmsCodeRepository extends JpaRepository<SmsCode, UUID> {
-    Optional<SmsCode> findByAccountId(UUID id);
-    void deleteByAccountId(UUID id);
+    Optional<SmsCode> findByPhone(String phone);
+    void deleteByPhone(String phone);
 }

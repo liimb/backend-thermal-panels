@@ -31,6 +31,11 @@ jwt:
   jwt-expired-time: 5
   jwt-refresh-expired-time: 1440
 
+sms:
+  service:
+    login: RosEcology
+    password: R302511r%
+
 springdoc:
   swagger-ui:
     enabled: true

@@ -14,7 +14,9 @@ public enum AuthErrorCodeEnum {
     WRONG_OBJECT_PARAMS("002", "Неверные параметры объекта", HttpStatus.BAD_REQUEST),
     NOT_FOUND_ACCOUNT_BY_PHONE("003", "Пользователь с таким телефоном не найден", HttpStatus.NOT_FOUND),
     NOT_FOUND_SMS_BY_ACCOUNT("004", "СМС код для данного телефона не найден", HttpStatus.NOT_FOUND),
-    SMS_IS_EXPIRED("005", "СМС код истек", HttpStatus.BAD_REQUEST);;
+    SMS_IS_EXPIRED("005", "СМС код истек", HttpStatus.BAD_REQUEST),
+    SMS_DONT_SEND("006", "Ошибка отправки СМС", HttpStatus.INTERNAL_SERVER_ERROR),
+    REGISTER_ERROR("007", "Ошибка регистрации. Подтвердите номер заново", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String description;

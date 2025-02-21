@@ -1,8 +1,7 @@
-package com.thermal.thermalback.modules.auth.entity;
+package com.thermal.thermalback.modules.temporary.account.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,12 +13,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "sms_codes")
+@NoArgsConstructor
 @Accessors(fluent = true)
+@Entity(name = "temporary_accounts")
 @EqualsAndHashCode(of = "id")
-public class SmsCode {
+public class TempAccount {
 
     @Id
     @Column(name = "id")
@@ -28,9 +27,6 @@ public class SmsCode {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "expires")
-    private LocalDateTime expires;
+    @Column(name = "register_uuid")
+    private UUID registerUUID;
 }
