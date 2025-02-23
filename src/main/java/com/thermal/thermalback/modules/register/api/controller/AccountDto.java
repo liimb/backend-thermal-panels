@@ -15,10 +15,10 @@ public class AccountDto {
     @JsonProperty("phone")
     private String phone;
 
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     private String lastName;
 
     @JsonProperty("patronymic")

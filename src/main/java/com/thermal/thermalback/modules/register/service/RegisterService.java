@@ -29,6 +29,8 @@ public class RegisterService {
 
     public RegisterResponse createAccount(RegisterRequest request) throws AuthException {
 
+        accountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS));
+
         TempAccount tempAccountUUID = tempAccountRepository.findByRegisterUUID(request.registerUUID()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
         TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
 

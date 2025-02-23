@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 public class RegisterResponse {
 
     @Schema(description = "Созданный аккаунт")
-    @JsonProperty("account")
+    @JsonProperty("accountDto")
     private AccountDto accountDto;
 
     @Schema(description = "Токены")
