@@ -16,8 +16,8 @@ import java.util.UUID;
 public class AuthResponse {
 
     @Schema(description = "Зарегистрирован ли пользователь")
-    @JsonProperty("isRegister")
-    private boolean isRegister;
+    @JsonProperty("userIsRegister")
+    private boolean userIsRegister;
 
     @Schema(description = "UUID для продолжения регистрации")
     @JsonProperty("registerUUID")
