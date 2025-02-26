@@ -3,10 +3,7 @@ package com.thermal.thermalback.modules.auth.api.controller;
 import com.thermal.thermalback.common.exception.AuthException;
 import com.thermal.thermalback.modules.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +21,13 @@ public class AuthController {
         return authService.loginBySms(request);
     }
 
-    //рефреш токены, логаут
+    @PostMapping("/refresh")
+    public JwtDto refresh(RefreshJwtRequest request) throws AuthException {
+        return authService.refresh(request);
+    }
+
+    @GetMapping("/check")
+    public String check() {
+        return "OK";
+    }
 }

@@ -90,7 +90,7 @@ public class JwtHelper {
 
             return new JwtDto()
                     .jwt(jwtToken)
-                    .refreshToken(refreshToken.toString())
+                    .refreshToken(refreshToken)
                     .maxAge(jwtConfig.getRefreshExpiredTime() * 60);
 
         } catch (JWTCreationException | IOException | GeneralSecurityException exception) {

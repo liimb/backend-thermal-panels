@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class JwtDto {
 
     @Schema(description = "Refresh token пользователя")
     @JsonProperty("refreshToken")
-    private String refreshToken;
+    private UUID refreshToken;
 
     @Schema(description = "Максимальный период актуальности токена в секундах")
     @JsonProperty("maxAge")

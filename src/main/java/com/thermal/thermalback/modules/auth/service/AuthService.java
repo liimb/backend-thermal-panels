@@ -4,10 +4,10 @@ import com.thermal.thermalback.common.exception.AuthErrorCodeEnum;
 import com.thermal.thermalback.common.exception.AuthException;
 import com.thermal.thermalback.modules.account.entity.Account;
 import com.thermal.thermalback.modules.account.repository.AccountRepository;
-import com.thermal.thermalback.modules.auth.api.controller.AuthRequest;
-import com.thermal.thermalback.modules.auth.api.controller.AuthRequestBySms;
-import com.thermal.thermalback.modules.auth.api.controller.AuthResponse;
+import com.thermal.thermalback.modules.auth.api.controller.*;
+import com.thermal.thermalback.modules.auth.entity.Jwt;
 import com.thermal.thermalback.modules.auth.entity.SmsCode;
+import com.thermal.thermalback.modules.auth.repository.JwtRepository;
 import com.thermal.thermalback.modules.auth.repository.SmsCodeRepository;
 import com.thermal.thermalback.modules.temporary.account.entity.TempAccount;
 import com.thermal.thermalback.modules.temporary.account.repository.TempAccountRepository;
@@ -34,6 +34,24 @@ public class AuthService {
     private final SmsService smsService;
 
     private static final int secondsLifeTimeSmsCode = 180;
+    private final JwtRepository jwtRepository;
+
+    public JwtDto refresh(RefreshJwtRequest request) throws AuthException {
+
+        Jwt jwt = jwtRepository.findFirstByJwtAndRefreshToken(request.jwt(), request.refreshToken())
+                .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR));
+
+        if(jwt.refreshExp().isBefore(UtilTimeService.getLocalDateNow())){
+            throw new AuthException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR);
+        }
+
+        jwtRepository.delete(jwt);
+
+        Account account = accountRepository.findById(jwt.accountId())
+                .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR));
+
+        return jwtHelper.createJwt(account.id(), account.role());
+    }
 
     public void askSmsCode(AuthRequest request) throws AuthException {
         smsCodeRepository.deleteByPhone(request.phone());
