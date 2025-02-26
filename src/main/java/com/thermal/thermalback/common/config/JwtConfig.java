@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtConfig {
 
-    @Value("${jwt-expired-time}")
+    @Value("${jwt.jwt-expired-time}")
     private Integer jwtExpiredTime;
 
-    @Value("${jwt-refresh-expired-time}")
+    @Value("${jwt.jwt-refresh-expired-time}")
     private Integer refreshExpiredTime;
 
 }

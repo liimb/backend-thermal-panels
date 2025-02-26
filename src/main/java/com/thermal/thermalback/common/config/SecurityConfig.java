@@ -65,15 +65,14 @@ public class SecurityConfig {
                                 "/auth/login/ask-sms-code",
                                 "/register/create"
                         ).permitAll()
-                        .requestMatchers("/").hasRole("ADMIN")
+                        //.requestMatchers("/").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .authenticationManagerResolver(request ->
                                 request.getRequestURI().endsWith("/auth/refresh")
                                         ? authManagerStore.get(REFRESH_AUTH_MANAGER_KEY)
                                         : authManagerStore.get(DEFAULT_AUTH_MANAGER_KEY)
-                        ).authenticationEntryPoint((request, response, e) ->
-                                exceptionResolver.resolveException(request,response,null,e)));
+                        ));
 
         return http.build();
     }
@@ -91,7 +90,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-        converter.setAuthorityPrefix("role");
+        converter.setAuthoritiesClaimName("role");
         converter.setAuthorityPrefix("");
 
         JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();

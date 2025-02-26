@@ -11,6 +11,7 @@ import com.thermal.thermalback.modules.account.entity.Role;
 import com.thermal.thermalback.modules.auth.api.controller.JwtDto;
 import com.thermal.thermalback.modules.auth.entity.Jwt;
 import com.thermal.thermalback.modules.auth.repository.JwtRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,19 +31,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Component
 public class JwtHelper {
 
     private final JwtRepository jwtRepository;
     private final KeyConfig keyConfig;
     private final JwtConfig jwtConfig;
-
-    @Autowired
-    public JwtHelper(JwtRepository jwtRepository, KeyConfig keyConfig, JwtConfig jwtConfig) {
-        this.jwtRepository = jwtRepository;
-        this.keyConfig = keyConfig;
-        this.jwtConfig = jwtConfig;
-    }
 
     public JwtDto createJwt(UUID accountId, Role role) throws AuthException {
         try {
@@ -55,7 +50,7 @@ public class JwtHelper {
             Algorithm algorithm = Algorithm.ECDSA256(publicKey, privateKey);
 
             LocalDateTime nowUtc = UtilTimeService.getLocalDateNow();
-            LocalDateTime expDateTimeUtc = nowUtc.plusSeconds(jwtConfig.getJwtExpiredTime());
+            LocalDateTime expDateTimeUtc = nowUtc.plusMinutes(jwtConfig.getJwtExpiredTime());
             LocalDateTime expDateTimeRefreshUtc = nowUtc.plusMinutes(jwtConfig.getRefreshExpiredTime());
 
             Instant nowInstant = UtilTimeService.toInstant(nowUtc);

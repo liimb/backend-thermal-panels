@@ -3,12 +3,12 @@ spring:
     name: ThermalBack
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/dbforthermal
+    url: jdbc:postgresql://localhost:5433/dbforthermal
     username: art
     password: art
   flyway:
     enabled: true
-    url: jdbc:postgresql://localhost:5432/dbforthermal
+    url: jdbc:postgresql://localhost:5433/dbforthermal
     user: art
     password: art
     schemas: public
