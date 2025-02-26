@@ -17,7 +17,7 @@ public class AuthException extends Exception {
     public AuthException(AuthErrorCodeEnum errorCodeEnum) {
 
         super(errorCodeEnum.description());
-        this.errorCode = errorCodeEnum.errorCode();
+        this.errorCode = errorCodeEnum.code();
         this.description = errorCodeEnum.description();
         this.status = errorCodeEnum.status();
 

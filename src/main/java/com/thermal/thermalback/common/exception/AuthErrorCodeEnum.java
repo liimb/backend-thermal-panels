@@ -21,5 +21,5 @@ public enum AuthErrorCodeEnum {
 
     private final String code;
     private final String description;
-    private final HttpStatus httpStatus;
+    private final HttpStatus status;
 }
