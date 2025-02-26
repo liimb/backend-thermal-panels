@@ -29,19 +29,19 @@ public class RegisterService {
 
     public RegisterResponse createAccount(RegisterRequest request) throws AuthException {
 
-        accountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS));
+        accountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS));
 
         TempAccount tempAccountUUID = tempAccountRepository.findByRegisterUUID(request.registerUUID()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
-        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
+        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
 
         if (Objects.equals(tempAccountUUID, tempAccountPhone)){
             Account account = new Account();
             account.id(UUID.randomUUID());
-            account.phone(request.phone());
-            account.email(request.email());
-            account.firstName(request.firstName());
-            account.lastName(request.lastName());
-            account.patronymic(request.patronymic());
+            account.phone(request.accountDto().phone());
+            account.email(request.accountDto().email());
+            account.firstName(request.accountDto().firstName());
+            account.lastName(request.accountDto().lastName());
+            account.patronymic(request.accountDto().patronymic());
             account.role(Role.USER);
 
             accountRepository.saveAndFlush(account);
