@@ -12,10 +12,13 @@ import com.thermal.thermalback.modules.temporary.account.entity.TempAccount;
 import com.thermal.thermalback.modules.temporary.account.repository.TempAccountRepository;
 import com.thermal.thermalback.util.JwtHelper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,19 +32,23 @@ public class RegisterService {
 
     public RegisterResponse createAccount(RegisterRequest request) throws AuthException {
 
-        accountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS));
+        Optional<Account> acc = accountRepository.findByPhone(request.phone());
+
+        if(acc.isPresent()) {
+            throw new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS);
+        }
 
         TempAccount tempAccountUUID = tempAccountRepository.findByRegisterUUID(request.registerUUID()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
-        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
+        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
 
         if (Objects.equals(tempAccountUUID, tempAccountPhone)){
             Account account = new Account();
             account.id(UUID.randomUUID());
-            account.phone(request.accountDto().phone());
-            account.email(request.accountDto().email());
-            account.firstName(request.accountDto().firstName());
-            account.lastName(request.accountDto().lastName());
-            account.patronymic(request.accountDto().patronymic());
+            account.phone(request.phone());
+            account.email(request.email());
+            account.firstName(request.firstName());
+            account.lastName(request.lastName());
+            account.patronymic(request.patronymic());
             account.role(Role.USER);
 
             accountRepository.saveAndFlush(account);

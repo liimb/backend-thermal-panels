@@ -22,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public JwtDto refresh(RefreshJwtRequest request) throws AuthException {
+    public JwtDto refresh(@RequestBody RefreshJwtRequest request) throws AuthException {
         return authService.refresh(request);
     }
 

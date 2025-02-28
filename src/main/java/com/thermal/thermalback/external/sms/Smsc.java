@@ -3,18 +3,12 @@
  */
 package com.thermal.thermalback.external.sms;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.net.*;
 import java.io.*;
 import java.lang.Math;
 
 public class Smsc {
-
-	@Value("${sms.service.login}")
 	String SMSC_LOGIN;		// логин клиента
-
-	@Value("${sms.service.password}")
 	String SMSC_PASSWORD = "";		// пароль клиента. Если передан пустой логин, то SMSC_PASSWORD используется, как API ключ, вместо логина и пароля
 
 	boolean SMSC_HTTPS	= false;	// использовать HTTPS протокол
