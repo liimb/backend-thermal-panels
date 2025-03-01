@@ -1,7 +1,7 @@
 package com.thermal.thermalback.modules.auth.service;
 
-import com.thermal.thermalback.common.exception.AuthErrorCodeEnum;
-import com.thermal.thermalback.common.exception.AuthException;
+import com.thermal.thermalback.common.exception.auth.AuthErrorCodeEnum;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import com.thermal.thermalback.modules.account.entity.Account;
 import com.thermal.thermalback.modules.account.repository.AccountRepository;
 import com.thermal.thermalback.modules.auth.api.controller.*;
@@ -71,7 +71,7 @@ public class AuthService {
 
     public AuthResponse loginBySms(AuthRequestBySms request) throws AuthException {
 
-        Optional<Account> optAccount = accountRepository.findByPhone(request.phone());//.orElseThrow(() -> new AuthException(AuthErrorCodeEnum.NOT_FOUND_ACCOUNT_BY_PHONE));
+        Optional<Account> optAccount = accountRepository.findByPhone(request.phone());
 
         if (optAccount.isPresent()) { //если уже есть аккаунт, то входим
 

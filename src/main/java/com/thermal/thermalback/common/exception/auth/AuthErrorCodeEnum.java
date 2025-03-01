@@ -1,4 +1,4 @@
-package com.thermal.thermalback.common.exception;
+package com.thermal.thermalback.common.exception.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

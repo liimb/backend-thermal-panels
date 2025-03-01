@@ -1,7 +1,7 @@
 package com.thermal.thermalback.modules.register.service;
 
-import com.thermal.thermalback.common.exception.AuthErrorCodeEnum;
-import com.thermal.thermalback.common.exception.AuthException;
+import com.thermal.thermalback.common.exception.auth.AuthErrorCodeEnum;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import com.thermal.thermalback.modules.account.entity.Account;
 import com.thermal.thermalback.modules.account.entity.Role;
 import com.thermal.thermalback.modules.account.repository.AccountRepository;
@@ -12,8 +12,6 @@ import com.thermal.thermalback.modules.temporary.account.entity.TempAccount;
 import com.thermal.thermalback.modules.temporary.account.repository.TempAccountRepository;
 import com.thermal.thermalback.util.JwtHelper;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

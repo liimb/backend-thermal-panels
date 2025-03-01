@@ -65,7 +65,11 @@ public class SecurityConfig {
                                 "/auth/login/ask-sms-code",
                                 "/register/create"
                         ).permitAll()
-                        //.requestMatchers("/").hasRole("ADMIN")
+                        .requestMatchers("/materials/get-all").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/materials/get/").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/materials/delete/").hasRole("ADMIN")
+                        .requestMatchers("/materials/edit/").hasRole("ADMIN")
+                        .requestMatchers("/materials/save").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .authenticationManagerResolver(request ->

@@ -1,4 +1,4 @@
-package com.thermal.thermalback.modules.material.util;
+package com.thermal.thermalback.util;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

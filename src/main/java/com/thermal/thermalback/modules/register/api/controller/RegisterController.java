@@ -1,6 +1,6 @@
 package com.thermal.thermalback.modules.register.api.controller;
 
-import com.thermal.thermalback.common.exception.AuthException;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import com.thermal.thermalback.modules.register.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

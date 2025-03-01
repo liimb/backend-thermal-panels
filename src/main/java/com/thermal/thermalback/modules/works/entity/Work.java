@@ -1,4 +1,4 @@
-package com.thermal.thermalback.modules.material.entity;
+package com.thermal.thermalback.modules.works.entity;
 
 import com.thermal.thermalback.util.Unit;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @Entity(name = "materials")
 @EqualsAndHashCode(of = "id")
-public class Material {
+public class Work {
 
     @Id
     @Column(name = "id")

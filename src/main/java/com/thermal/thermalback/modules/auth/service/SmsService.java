@@ -1,8 +1,6 @@
 package com.thermal.thermalback.modules.auth.service;
 
-import com.thermal.thermalback.common.exception.AuthErrorCodeEnum;
-import com.thermal.thermalback.common.exception.AuthException;
-import com.thermal.thermalback.external.sms.Smsc;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

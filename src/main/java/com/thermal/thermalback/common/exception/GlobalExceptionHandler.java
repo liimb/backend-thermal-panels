@@ -1,5 +1,7 @@
 package com.thermal.thermalback.common.exception;
 
+import com.thermal.thermalback.common.exception.auth.AuthException;
+import com.thermal.thermalback.common.exception.material.MaterialException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
-    protected ResponseEntity<ErrorResponse> handlerException(AuthException ex) {
+    protected ResponseEntity<ErrorResponse> authHandlerException(AuthException ex) {
         ex.printStackTrace();
 
         ErrorResponse response = new ErrorResponse(
@@ -20,4 +22,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(response.status()).body(response);
     }
 
+    @ExceptionHandler(MaterialException.class)
+    protected ResponseEntity<ErrorResponse> materialHandlerException(MaterialException ex) {
+        ex.printStackTrace();
+
+        ErrorResponse response = new ErrorResponse(
+                ex.description(),
+                ex.errorCode(),
+                ex.status()
+        );
+
+        return ResponseEntity.status(response.status()).body(response);
+    }
 }

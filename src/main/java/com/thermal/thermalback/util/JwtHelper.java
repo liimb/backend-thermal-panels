@@ -5,15 +5,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.thermal.thermalback.common.config.JwtConfig;
 import com.thermal.thermalback.common.config.KeyConfig;
-import com.thermal.thermalback.common.exception.AuthErrorCodeEnum;
-import com.thermal.thermalback.common.exception.AuthException;
+import com.thermal.thermalback.common.exception.auth.AuthErrorCodeEnum;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import com.thermal.thermalback.modules.account.entity.Role;
 import com.thermal.thermalback.modules.auth.api.controller.JwtDto;
 import com.thermal.thermalback.modules.auth.entity.Jwt;
 import com.thermal.thermalback.modules.auth.repository.JwtRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

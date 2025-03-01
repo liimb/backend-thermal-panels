@@ -1,6 +1,6 @@
 package com.thermal.thermalback.modules.auth.api.controller;
 
-import com.thermal.thermalback.common.exception.AuthException;
+import com.thermal.thermalback.common.exception.auth.AuthException;
 import com.thermal.thermalback.modules.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
