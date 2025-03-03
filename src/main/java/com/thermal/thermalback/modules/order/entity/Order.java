@@ -1,8 +1,10 @@
-package com.thermal.thermalback.modules.material.entity;
+package com.thermal.thermalback.modules.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.thermal.thermalback.util.unit.Unit;
-import jakarta.persistence.*;
+import com.thermal.thermalback.util.OrderStatus;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,28 +14,27 @@ import lombok.experimental.Accessors;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Accessors(fluent = true)
-@Entity(name = "materials")
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Material {
+@Entity(name = "orders")
+public class Order {
 
     @Id
     @Column(name = "id")
     @JsonProperty("id")
     private UUID id;
 
+    @Column(name = "user_id")
+    @JsonProperty("userId")
+    private UUID userId;
+
     @Column(name = "name")
     @JsonProperty("name")
     private String name;
 
-    @Column(name = "unit")
-    //@Enumerated(EnumType.STRING)
-    @JsonProperty("unit")
-    private String unit;
-
-    @Column(name = "price")
-    @JsonProperty("price")
-    private Float price;
+    @Column(name = "status")
+    @JsonProperty("status")
+    private String status;
 }

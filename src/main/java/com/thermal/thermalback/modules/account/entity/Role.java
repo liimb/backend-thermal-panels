@@ -9,5 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public enum Role {
     USER,
-    ADMIN
+    ADMIN,
+    TEST
 }

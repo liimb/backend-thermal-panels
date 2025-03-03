@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JoseHeaderNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -22,6 +25,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
@@ -65,13 +71,27 @@ public class SecurityConfig {
                                 "/auth/login/ask-sms-code",
                                 "/register/create"
                         ).permitAll()
-                        .requestMatchers("/materials/get-all").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/materials/get/").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/materials/delete/").hasRole("ADMIN")
-                        .requestMatchers("/materials/edit/").hasRole("ADMIN")
-                        .requestMatchers("/materials/save").hasRole("ADMIN")
+
+                        .requestMatchers("/materials/get-all").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/materials/get/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/materials/delete/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/materials/edit/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/materials/save").hasAnyAuthority("ADMIN")
+
+                        .requestMatchers("/works/get-all").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/works/get/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/works/delete/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/works/edit/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/works/save").hasAnyAuthority("ADMIN")
+
+                        .requestMatchers("/orders/get-all-by-user/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/orders/create").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/orders/edit/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/orders/delete/**").hasAnyAuthority("ADMIN")
+
                         .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2
+
+                    .oauth2ResourceServer(oauth2 -> oauth2
                         .authenticationManagerResolver(request ->
                                 request.getRequestURI().endsWith("/auth/refresh")
                                         ? authManagerStore.get(REFRESH_AUTH_MANAGER_KEY)
@@ -82,9 +102,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public Map<String, AuthenticationManager> authManagerStore(
-            JwtDecoder jwtVerifyDecoder, JwtDecoder jwtIgnoreTimeDecoder, JwtAuthenticationConverter customAuthConverter
-    ){
+    Map<String, AuthenticationManager> authManagerStore(
+            JwtDecoder jwtVerifyDecoder, JwtDecoder jwtIgnoreTimeDecoder,
+            JwtAuthenticationConverter customAuthConverter
+    ) {
         return Map.of(
                 DEFAULT_AUTH_MANAGER_KEY, getAuthManager(jwtVerifyDecoder, customAuthConverter),
                 REFRESH_AUTH_MANAGER_KEY, getAuthManager(jwtIgnoreTimeDecoder, customAuthConverter)
@@ -158,5 +179,36 @@ public class SecurityConfig {
         List<String> file = Files.readAllLines(Paths.get(path));
         String key = String.join("\n", file.subList(1, file.size() - 1));
         return Base64.decodeBase64(key);
+    }
+
+    @Bean
+    CorsConfigurationSource configurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        configuration.addAllowedMethod(HttpMethod.GET);
+        configuration.addAllowedMethod(HttpMethod.PUT);
+        configuration.addAllowedMethod(HttpMethod.POST);
+        configuration.addAllowedMethod(HttpMethod.DELETE);
+        configuration.addAllowedMethod(HttpMethod.OPTIONS);
+
+        configuration.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
+        configuration.addAllowedHeader(HttpHeaders.ACCEPT);
+        configuration.addAllowedHeader(HttpHeaders.AUTHORIZATION);
+        configuration.addAllowedHeader("X-Requested-With");
+
+        configuration.addExposedHeader(HttpHeaders.CONTENT_DISPOSITION);
+
+        configuration.applyPermitDefaultValues();
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+
     }
 }

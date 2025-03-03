@@ -1,12 +1,11 @@
-package com.thermal.thermalback.modules.material.entity;
+package com.thermal.thermalback.modules.work.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermal.thermalback.util.unit.Unit;
+import com.thermal.thermalback.util.unit.UnitConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Convert;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.UUID;
@@ -15,9 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(fluent = true)
-@Entity(name = "materials")
+@Entity(name = "works")
 @EqualsAndHashCode(of = "id")
-public class Material {
+public class Work {
 
     @Id
     @Column(name = "id")
@@ -30,6 +29,7 @@ public class Material {
 
     @Column(name = "unit")
     //@Enumerated(EnumType.STRING)
+    //@Convert(converter = UnitConverter.class)
     @JsonProperty("unit")
     private String unit;
 

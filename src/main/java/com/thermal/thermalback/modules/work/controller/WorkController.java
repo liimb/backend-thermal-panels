@@ -1,10 +1,10 @@
-package com.thermal.thermalback.modules.works.controller;
+package com.thermal.thermalback.modules.work.controller;
 
-import com.thermal.thermalback.common.exception.material.MaterialException;
 import com.thermal.thermalback.common.exception.work.WorkException;
-import com.thermal.thermalback.modules.works.entity.Work;
-import com.thermal.thermalback.modules.works.service.WorkService;
+import com.thermal.thermalback.modules.work.entity.Work;
+import com.thermal.thermalback.modules.work.service.WorkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class WorkController {
         return workService.getAllWorks();
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteWorkById(@PathVariable UUID id) {
         workService.deleteWorkById(id);
     }
@@ -38,7 +38,7 @@ public class WorkController {
     }
 
     @PostMapping("/save")
-    public Work editWork(@RequestBody WorkDto workDto) {
-        return workService.saveMaterial(workDto);
+    public Work saveWork(@RequestBody WorkDto workDto) {
+        return workService.saveWork(workDto);
     }
 }

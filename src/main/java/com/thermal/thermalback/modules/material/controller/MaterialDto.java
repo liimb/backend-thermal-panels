@@ -1,9 +1,7 @@
 package com.thermal.thermalback.modules.material.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.thermal.thermalback.util.Unit;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.thermal.thermalback.util.unit.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,6 @@ public class MaterialDto {
     private String name;
 
     @JsonProperty("unit")
-    @Enumerated(EnumType.STRING)
     private Unit unit;
 
     @JsonProperty("price")

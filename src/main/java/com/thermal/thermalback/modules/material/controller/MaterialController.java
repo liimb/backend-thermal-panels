@@ -4,6 +4,7 @@ import com.thermal.thermalback.common.exception.material.MaterialException;
 import com.thermal.thermalback.modules.material.entity.Material;
 import com.thermal.thermalback.modules.material.service.MaterialService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MaterialController {
         return materialService.getAllMaterials();
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteMaterialById(@PathVariable UUID id) {
         materialService.deleteMaterialById(id);
     }
@@ -37,7 +38,7 @@ public class MaterialController {
     }
 
     @PostMapping("/save")
-    public Material editMaterial(@RequestBody MaterialDto materialDto) {
+    public Material saveMaterial(@RequestBody MaterialDto materialDto) {
         return materialService.saveMaterial(materialDto);
     }
 }

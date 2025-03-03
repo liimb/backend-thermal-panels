@@ -34,7 +34,7 @@ public class MaterialService {
         Material mat = materialRepository.findById(id).orElseThrow(() -> new MaterialException(MaterialErrorCodeEnum.MATERIAL_NOT_FOUND));
 
         mat.name(materialDto.name());
-        mat.unit(materialDto.unit());
+        mat.unit(materialDto.unit().getValue());
         mat.price(materialDto.price());
 
         return materialRepository.save(mat);
@@ -45,7 +45,7 @@ public class MaterialService {
 
         mat.id(UUID.randomUUID());
         mat.name(materialDto.name());
-        mat.unit(materialDto.unit());
+        mat.unit(materialDto.unit().getValue());
         mat.price(materialDto.price());
 
         return materialRepository.save(mat);
