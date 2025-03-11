@@ -66,9 +66,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
-                                "/auth/login/",
-                                "/auth/login/by-sms",
-                                "/auth/login/ask-sms-code",
+                                "/auth/by-sms",
+                                "/auth/ask-sms-code",
                                 "/register/create"
                         ).permitAll()
 

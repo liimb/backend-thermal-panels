@@ -54,7 +54,7 @@ public class AuthService {
     }
 
     public void askSmsCode(AuthRequest request) throws AuthException {
-        smsCodeRepository.deleteByPhone(request.phone());
+        smsCodeRepository.deleteAllByPhone(request.phone());
 
         String code = smsService.generateSmsCode();
 
@@ -76,32 +76,19 @@ public class AuthService {
         if (optAccount.isPresent()) { //если уже есть аккаунт, то входим
 
             Account account = optAccount.get();
-            SmsCode smsCode = smsCodeRepository.findByPhone(account.phone())
-                    .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.NOT_FOUND_SMS_BY_ACCOUNT));
-
-            boolean isSmsCodeExpired = UtilTimeService.getLocalDateNow().isAfter(smsCode.expires());
-            boolean isValidRequestCode = Objects.equals(smsCode.code(), request.code());
+            SmsCode smsCode = checkSmsCodeByPhone(request, account.phone());
 
             smsCodeRepository.delete(smsCode);
 
-            if (!isSmsCodeExpired && isValidRequestCode) {
-                return new AuthResponse(true, null, jwtHelper.createJwt(account.id(), account.role()));
-            } else {
-                throw new AuthException(AuthErrorCodeEnum.SMS_IS_EXPIRED);
-            }
+            return new AuthResponse(true, null, jwtHelper.createJwt(account.id(), account.role()));
 
         } else { //если аккаунта нет, то во временный аккаунт с этим номером записываем UUID для продолжения регистрации
-            TempAccount tempAccount;
-            UUID registerUUID = UUID.randomUUID();
             Optional<TempAccount> optTempAccount = tempAccountRepository.findByPhone(request.phone());
 
-            SmsCode smsCode = smsCodeRepository.findByPhone(request.phone())
-                    .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.NOT_FOUND_SMS_BY_ACCOUNT));
+            SmsCode smsCode = checkSmsCodeByPhone(request, request.phone());
 
-            boolean isSmsCodeExpired = UtilTimeService.getLocalDateNow().isAfter(smsCode.expires());
-            boolean isValidRequestCode = Objects.equals(smsCode.code(), request.code());
-
-            smsCodeRepository.delete(smsCode);
+            TempAccount tempAccount;
+            UUID registerUUID = UUID.randomUUID();
 
             if (optTempAccount.isPresent()) {
                 tempAccount = optTempAccount.get();
@@ -114,12 +101,28 @@ public class AuthService {
             }
 
             tempAccountRepository.saveAndFlush(tempAccount);
+            smsCodeRepository.delete(smsCode);
 
-            if (!isSmsCodeExpired && isValidRequestCode) {
-                return new AuthResponse(false, registerUUID, null);
-            } else {
-                throw new AuthException(AuthErrorCodeEnum.SMS_IS_EXPIRED);
-            }
+            return new AuthResponse(false, registerUUID, null);
         }
+    }
+
+    private SmsCode checkSmsCodeByPhone(AuthRequestBySms request, String phone) throws AuthException {
+        SmsCode smsCode = smsCodeRepository.findByPhone(phone)
+                .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.NOT_FOUND_SMS_BY_ACCOUNT));
+
+        boolean isSmsCodeExpired = UtilTimeService.getLocalDateNow().isAfter(smsCode.expires());
+        boolean isValidRequestCode = Objects.equals(smsCode.code(), request.code());
+
+        if (isSmsCodeExpired) {
+            smsCodeRepository.delete(smsCode);
+            throw new AuthException(AuthErrorCodeEnum.SMS_IS_EXPIRED);
+        }
+
+        if (!isValidRequestCode) {
+            throw new AuthException(AuthErrorCodeEnum.SMS_NOT_VALID);
+        }
+
+        return smsCode;
     }
 }

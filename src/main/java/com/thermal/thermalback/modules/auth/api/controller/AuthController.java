@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/login/ask-sms-code")
+    @PostMapping("/ask-sms-code")
     public void askSmsCode(@RequestBody AuthRequest request) throws AuthException {
         authService.askSmsCode(request);
     }
 
-    @PostMapping("/login/by-sms")
+    @PostMapping("/by-sms")
     public AuthResponse loginBySms(@RequestBody AuthRequestBySms request) throws AuthException {
         return authService.loginBySms(request);
     }
