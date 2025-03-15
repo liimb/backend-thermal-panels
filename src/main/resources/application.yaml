@@ -28,8 +28,8 @@ server:
   port: 7070
 
 jwt:
-  jwt-expired-time: 60
-  jwt-refresh-expired-time: 1440
+  jwt-expired-time: 1
+  jwt-refresh-expired-time: 120
 
 sms:
   service:

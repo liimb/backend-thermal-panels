@@ -18,7 +18,8 @@ public enum AuthErrorCodeEnum {
     SMS_NOT_VALID("009", "Неверный СМС код", HttpStatus.BAD_REQUEST),
     SMS_DONT_SEND("006", "Ошибка отправки СМС", HttpStatus.INTERNAL_SERVER_ERROR),
     REGISTER_ERROR("007", "Ошибка регистрации. Подтвердите номер заново", HttpStatus.BAD_REQUEST),
-    ACCOUNT_ALREADY_EXISTS("008", "Аккаунт с таким номером уже существует", HttpStatus.BAD_REQUEST);
+    ACCOUNT_ALREADY_EXISTS("008", "Аккаунт с таким номером уже существует", HttpStatus.BAD_REQUEST),
+    AUTH_EXPIRES("009", "Пользователь не авторизован", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String code;
     private final String description;

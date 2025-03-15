@@ -67,6 +67,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/auth/by-sms",
+                                "/auth/refresh",
                                 "/auth/ask-sms-code",
                                 "/register/create"
                         ).permitAll()

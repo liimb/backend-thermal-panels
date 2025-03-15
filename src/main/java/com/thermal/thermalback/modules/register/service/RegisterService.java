@@ -30,23 +30,23 @@ public class RegisterService {
 
     public RegisterResponse createAccount(RegisterRequest request) throws AuthException {
 
-        Optional<Account> acc = accountRepository.findByPhone(request.phone());
+        Optional<Account> acc = accountRepository.findByPhone(request.accountDto().phone());
 
         if(acc.isPresent()) {
             throw new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS);
         }
 
         TempAccount tempAccountUUID = tempAccountRepository.findByRegisterUUID(request.registerUUID()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
-        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
+        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
 
         if (Objects.equals(tempAccountUUID, tempAccountPhone)){
             Account account = new Account();
             account.id(UUID.randomUUID());
-            account.phone(request.phone());
-            account.email(request.email());
-            account.firstName(request.firstName());
-            account.lastName(request.lastName());
-            account.patronymic(request.patronymic());
+            account.phone(request.accountDto().phone());
+            account.email(request.accountDto().email());
+            account.firstName(request.accountDto().firstName());
+            account.lastName(request.accountDto().lastName());
+            account.patronymic(request.accountDto().patronymic());
             account.role(Role.USER);
 
             accountRepository.saveAndFlush(account);
@@ -57,6 +57,8 @@ public class RegisterService {
             accountDto.lastName(account.lastName());
             accountDto.patronymic(account.patronymic());
             accountDto.phone(account.phone());
+
+            tempAccountRepository.delete(tempAccountUUID);
 
             return new RegisterResponse(accountDto, jwtHelper.createJwt(account.id(), account.role()));
         } else {

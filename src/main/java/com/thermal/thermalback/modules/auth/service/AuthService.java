@@ -42,7 +42,7 @@ public class AuthService {
                 .orElseThrow(() -> new AuthException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR));
 
         if(jwt.refreshExp().isBefore(UtilTimeService.getLocalDateNow())){
-            throw new AuthException(AuthErrorCodeEnum.INTERNAL_SERVER_ERROR);
+            throw new AuthException(AuthErrorCodeEnum.AUTH_EXPIRES);
         }
 
         jwtRepository.delete(jwt);
