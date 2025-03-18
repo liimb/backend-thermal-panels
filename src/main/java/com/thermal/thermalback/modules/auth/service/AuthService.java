@@ -9,6 +9,7 @@ import com.thermal.thermalback.modules.auth.entity.Jwt;
 import com.thermal.thermalback.modules.auth.entity.SmsCode;
 import com.thermal.thermalback.modules.auth.repository.JwtRepository;
 import com.thermal.thermalback.modules.auth.repository.SmsCodeRepository;
+import com.thermal.thermalback.modules.register.api.controller.AccountDto;
 import com.thermal.thermalback.modules.temporary.account.entity.TempAccount;
 import com.thermal.thermalback.modules.temporary.account.repository.TempAccountRepository;
 import com.thermal.thermalback.util.JwtHelper;
@@ -80,7 +81,11 @@ public class AuthService {
 
             smsCodeRepository.delete(smsCode);
 
-            return new AuthResponse(true, null, jwtHelper.createJwt(account.id(), account.role()));
+            return new AuthResponse(
+                    true,
+                    null,
+                    jwtHelper.createJwt(account.id(), account.role()),
+                    new AccountDto(account.id(), account.phone(), account.firstName(), account.lastName(), account.patronymic(), account.email()));
 
         } else { //если аккаунта нет, то во временный аккаунт с этим номером записываем UUID для продолжения регистрации
             Optional<TempAccount> optTempAccount = tempAccountRepository.findByPhone(request.phone());
@@ -103,7 +108,7 @@ public class AuthService {
             tempAccountRepository.saveAndFlush(tempAccount);
             smsCodeRepository.delete(smsCode);
 
-            return new AuthResponse(false, registerUUID, null);
+            return new AuthResponse(false, registerUUID, null, null);
         }
     }
 

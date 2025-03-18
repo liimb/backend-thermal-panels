@@ -30,28 +30,29 @@ public class RegisterService {
 
     public RegisterResponse createAccount(RegisterRequest request) throws AuthException {
 
-        Optional<Account> acc = accountRepository.findByPhone(request.accountDto().phone());
+        Optional<Account> acc = accountRepository.findByPhone(request.accountRegisterRequest().phone());
 
         if(acc.isPresent()) {
             throw new AuthException(AuthErrorCodeEnum.ACCOUNT_ALREADY_EXISTS);
         }
 
         TempAccount tempAccountUUID = tempAccountRepository.findByRegisterUUID(request.registerUUID()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
-        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.accountDto().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
+        TempAccount tempAccountPhone = tempAccountRepository.findByPhone(request.accountRegisterRequest().phone()).orElseThrow(() -> new AuthException(AuthErrorCodeEnum.REGISTER_ERROR));
 
         if (Objects.equals(tempAccountUUID, tempAccountPhone)){
             Account account = new Account();
             account.id(UUID.randomUUID());
-            account.phone(request.accountDto().phone());
-            account.email(request.accountDto().email());
-            account.firstName(request.accountDto().firstName());
-            account.lastName(request.accountDto().lastName());
-            account.patronymic(request.accountDto().patronymic());
+            account.phone(request.accountRegisterRequest().phone());
+            account.email(request.accountRegisterRequest().email());
+            account.firstName(request.accountRegisterRequest().firstName());
+            account.lastName(request.accountRegisterRequest().lastName());
+            account.patronymic(request.accountRegisterRequest().patronymic());
             account.role(Role.USER);
 
             accountRepository.saveAndFlush(account);
 
             AccountDto accountDto = new AccountDto();
+            accountDto.id(account.id());
             accountDto.email(account.email());
             accountDto.firstName(account.firstName());
             accountDto.lastName(account.lastName());

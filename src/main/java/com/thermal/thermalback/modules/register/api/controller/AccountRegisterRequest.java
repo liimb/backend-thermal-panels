@@ -6,16 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(fluent = true)
-public class AccountDto {
-
-    @JsonProperty("id")
-    private UUID id;
+public class AccountRegisterRequest {
 
     @JsonProperty("phone")
     private String phone;

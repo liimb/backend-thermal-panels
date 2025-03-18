@@ -1,6 +1,7 @@
 package com.thermal.thermalback.modules.auth.api.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.thermal.thermalback.modules.register.api.controller.AccountDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,4 +27,8 @@ public class AuthResponse {
     @Schema(description = "Токены, если аутентифицирован")
     @JsonProperty("jwtDto")
     private JwtDto jwtDto;
+
+    @Schema(description = "Аккаунт, если зарегистрирован")
+    @JsonProperty("accountDto")
+    private AccountDto accountDto;
 }

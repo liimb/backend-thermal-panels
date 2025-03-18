@@ -14,8 +14,8 @@ import java.util.UUID;
 @Accessors(fluent = true)
 public class RegisterRequest {
 
-    @JsonProperty("accountDto")
-    private AccountDto accountDto;
+    @JsonProperty("accountRequest")
+    private AccountRegisterRequest accountRegisterRequest;
 
     @JsonProperty("registerUUID")
     private UUID registerUUID;

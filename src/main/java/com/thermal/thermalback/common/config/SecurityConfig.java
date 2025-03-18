@@ -17,7 +17,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JoseHeaderNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -46,8 +45,8 @@ import java.util.Map;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static String DEFAULT_AUTH_MANAGER_KEY = "default-auth-manager";
-    private static String REFRESH_AUTH_MANAGER_KEY = "refresh-auth-manager";
+    private static final String DEFAULT_AUTH_MANAGER_KEY = "default-auth-manager";
+    private static final String REFRESH_AUTH_MANAGER_KEY = "refresh-auth-manager";
 
     private final String pathToPublicKey;
     private final HandlerExceptionResolver exceptionResolver;
@@ -71,6 +70,8 @@ public class SecurityConfig {
                                 "/auth/ask-sms-code",
                                 "/register/create"
                         ).permitAll()
+                        
+                        .requestMatchers("/account/get-by-id/**").hasAnyAuthority("USER", "ADMIN")
 
                         .requestMatchers("/materials/get-all").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/materials/get/**").hasAnyAuthority("USER", "ADMIN")
