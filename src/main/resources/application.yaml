@@ -33,8 +33,8 @@ jwt:
 
 sms:
   service:
-    login: RosEcology
-    password: R302511r%
+    login: ''
+    password: ''
 
 springdoc:
   swagger-ui:
